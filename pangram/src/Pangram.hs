@@ -5,4 +5,5 @@ import Data.Char
 isPangram :: String -> Bool
 isPangram text =
   let lowerCaseText = map toLower text
-    in null [ c | c <- ['a'..'z'], c `notElem` lowerCaseText]
+      inText c = c `elem` lowerCaseText
+    in all inText ['a'..'z']
