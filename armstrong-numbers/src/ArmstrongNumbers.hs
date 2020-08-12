@@ -1,8 +1,11 @@
 module ArmstrongNumbers (armstrong) where
 
-import Data.List (unfoldr)
-
 armstrong :: Integral a => a -> Bool
 armstrong x = sum (map (^power) digits) == x
-  where digits = reverse $ unfoldr (\n -> if n == 0 then Nothing else Just (n `mod` 10, n `div` 10)) x
+  where digits = intToDigits x
         power = length digits
+
+intToDigits :: Integral a => a -> [a]
+intToDigits 0 = [0]
+intToDigits n = intToDigits' n
+  where intToDigits' = reverse . map (`mod` 10) . takeWhile (/=0) . iterate (`div` 10)
