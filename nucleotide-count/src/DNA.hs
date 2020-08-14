@@ -1,18 +1,23 @@
-module DNA (nucleotideCounts, Nucleotide(..)) where
+module DNA (
+  nucleotideCounts,
+  Nucleotide(..)
+) where
 
 import qualified Data.Map as M
-import Data.List (partition, group, sort)
 
 data Nucleotide = A | C | G | T deriving (Eq, Ord, Show, Read)
 
-nucleotideFromChar :: Char -> Nucleotide
-nucleotideFromChar c = read([c])
+parseNucleotide :: Char -> Either String Nucleotide
+parseNucleotide c = case c of
+  'A' -> Right A
+  'C' -> Right C
+  'G' -> Right G
+  'T' -> Right T
+  _ -> Left $ "Char " ++ show c ++ " is not a valid Nucleotide."
 
 nucleotideCounts :: String -> Either String (M.Map Nucleotide Int)
-nucleotideCounts xs =
-  case partition (`elem` "ACGT") xs of
-    ([], [])  -> Right $ M.fromList defaultNucleotideCountList
-    (_, (x:_)) -> Left "There are non-nucleotide elemjents in the string."
-    (nucleotides, []) -> let nucleotideCountList = map (\str -> (nucleotideFromChar(head str), length str)) $ group (sort nucleotides)
-                         in Right $ M.fromList (defaultNucleotideCountList ++ nucleotideCountList)
-  where defaultNucleotideCountList = [(A,0), (C,0), (G,0), (T, 0)]
+nucleotideCounts xs = case traverse parseNucleotide xs of
+  (Left err) -> Left err
+  (Right nucleotides) -> Right $ M.fromListWith (+) $ zip nucleotides (repeat 1)
+
+
