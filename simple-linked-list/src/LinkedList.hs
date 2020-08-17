@@ -34,7 +34,9 @@ nil :: LinkedList a
 nil = EmptyList
 
 reverseLinkedList :: LinkedList a -> LinkedList a
-reverseLinkedList = fromList . reverse . toList
+reverseLinkedList = reverseLLHelper EmptyList
+    where reverseLLHelper acc EmptyList = acc
+          reverseLLHelper acc (x `Cons` xs) = reverseLLHelper (x `Cons` acc) xs
 
 toList :: LinkedList a -> [a]
 toList EmptyList = []
