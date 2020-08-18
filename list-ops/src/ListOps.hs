@@ -14,6 +14,9 @@ module ListOps
 import Prelude hiding
   ( length, reverse, map, filter, foldr, (++), concat )
 
+-- TODO: redo these to use foldl' or foldr (instead of re-implementing recursion)
+-- ex: https://exercism.io/tracks/haskell/exercises/list-ops/solutions/1f03ccce64a04f9a9a08e9789528f739
+
 foldl' :: (b -> a -> b) -> b -> [a] -> b
 foldl' _ z [] = z
 foldl' f z (x:xs) =
@@ -23,7 +26,6 @@ foldl' f z (x:xs) =
 foldr :: (a -> b -> b) -> b -> [a] -> b
 foldr _ z [] = z
 foldr f z (x:xs) = f x (foldr f z xs)
-
 
 length :: [a] -> Int
 length [] = 0
