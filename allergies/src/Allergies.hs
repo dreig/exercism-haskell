@@ -12,7 +12,7 @@ data Allergen = Eggs
               deriving (Eq, Show, Ord, Enum, Read, Bounded)
 
 allergies :: Int -> [Allergen]
-allergies score = map toEnum $ filter (testBit score) [0..7]
+allergies score = filter (`isAllergicTo` score) [minBound .. maxBound]
 
 isAllergicTo :: Allergen -> Int -> Bool
 isAllergicTo allergen score = testBit score (fromEnum allergen)
