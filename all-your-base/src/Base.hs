@@ -1,6 +1,7 @@
 module Base (Error(..), rebase) where
 
 import Data.List
+import Data.Tuple (swap)
 
 data Error a = InvalidInputBase | InvalidOutputBase | InvalidDigit a
     deriving (Show, Eq)
@@ -17,4 +18,4 @@ rebase inputBase outputBase inputDigits
         toBase 0 _    = []
         toBase n base = reverse $ unfoldr (`maybeDiv` base) n
         maybeDiv 0 _ = Nothing
-        maybeDiv n base = let (x,y) = (n `quotRem` base) in Just (y,x)
+        maybeDiv n base = Just $ swap (n `quotRem` base)
