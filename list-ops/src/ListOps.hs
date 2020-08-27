@@ -14,9 +14,6 @@ module ListOps
 import Prelude hiding
   ( length, reverse, map, filter, foldr, (++), concat )
 
--- TODO: redo these to use foldl' or foldr (instead of re-implementing recursion)
--- ex: https://exercism.io/tracks/haskell/exercises/list-ops/solutions/1f03ccce64a04f9a9a08e9789528f739
-
 foldl' :: (b -> a -> b) -> b -> [a] -> b
 foldl' _ z [] = z
 foldl' f z (x:xs) =
@@ -28,27 +25,22 @@ foldr _ z [] = z
 foldr f z (x:xs) = f x (foldr f z xs)
 
 length :: [a] -> Int
-length [] = 0
-length (_:xs) = 1 + length xs
+length = foldl' (const . succ) 0
 
 reverse :: [a] -> [a]
-reverse = reverseHelper []
-  where reverseHelper res [] = res
-        reverseHelper res (x:xs) = reverseHelper (x:res) xs
+reverse = foldl' (flip (:)) []
 
 map :: (a -> b) -> [a] -> [b]
-map _ [] = []
-map f (x:xs) = f x : map f xs
+map f = foldr ((:) . f) []
 
 filter :: (a -> Bool) -> [a] -> [a]
 filter _ [] = []
-filter f (x:xs)
-  | f x       = x : filter f xs
-  | otherwise = filter f xs
+filter p (x:xs)
+  | p x       = x : filter p xs
+  | otherwise = filter p xs
 
 (++) :: [a] -> [a] -> [a]
-[] ++ ys = ys
-(x:xs) ++ ys = x : (xs ++ ys)
+xs ++ ys = foldr (:) ys xs
 
 concat :: [[a]] -> [a]
 concat = foldr (++) []
