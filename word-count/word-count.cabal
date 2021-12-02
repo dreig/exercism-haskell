@@ -1,10 +1,8 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.33.0.
+-- This file has been generated from package.yaml by hpack version 0.34.4.
 --
 -- see: https://github.com/sol/hpack
---
--- hash: 882fa6d62d2e7a83265dfc44ffad00e7c4d8034fab0d953a5cf06a4ccc1d14ce
 
 name:           word-count
 version:        1.4.0.8
